@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fast G-Drive</title>
+    <script>
+        let gauthUrl;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            fetch("/api/auth").then(r => r.text()).then(t => gauthUrl = t.slice(1, -1))
+        })
+
+        clickAuth = () => {
+            window.open(gauthUrl, '_blank');
+        }
+
+        clearFileList = () => {
+            const list = document.getElementById("filesList");
+            while (list.firstChild) {
+                list.removeChild(list.firstChild)
+            }
+        }
+
+        clickListFiles = () => {
+            clearFileList();
+            fetch("/files").then(r => r.json()).then(d => {
+                d.map(el => {
+                    console.log(el)
+                })
+            })
+        }
+    </script>
+</head>
+<body>
+<button onclick="clickAuth()">Authenticate</button>
+<button onclick="clickListFiles()">List files</button>
+<ul id="filesList"><li>hohoho</li></ul>
+</body>
+</html>
